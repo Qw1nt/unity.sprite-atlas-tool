@@ -4,6 +4,7 @@ using Qw1nt.SpriteAtlasTool;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
+using UnityEngine.UI;
 
 namespace Qw1nt.SpriteAtlasTools.Editor
 {
@@ -57,9 +58,19 @@ namespace Qw1nt.SpriteAtlasTools.Editor
             for (int i = 0; i < sprites.Length; i++)
                 _atlasKeys[i] = sprites[i].name.Split('(').First();
 
-            var temp = _atlasKeys.ToList();
-            temp.Sort();
-            _atlasKeys = temp.ToArray();
+            var unsortedKeys = _atlasKeys.ToList();
+            unsortedKeys.Sort();
+            
+            _atlasKeys = unsortedKeys.ToArray();
+            TrySetKeyAuto();
+        }
+        
+        private void TrySetKeyAuto()
+        {
+            if(((SpriteAtlasProviderBase<Image>) target).TryGetComponent(out Image image) == false)
+                return;
+            
+            _selectedKeyIndex = _atlasKeys.ToList().FindIndex(x => x == image.sprite.name);
         }
     }
 }
