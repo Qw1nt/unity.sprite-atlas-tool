@@ -60,16 +60,18 @@ namespace Qw1nt.SpriteAtlasTools.Editor
 
             var unsortedKeys = _atlasKeys.ToList();
             unsortedKeys.Sort();
-            
+
             _atlasKeys = unsortedKeys.ToArray();
-            TrySetKeyAuto();
+
+            if (string.IsNullOrEmpty(_key.stringValue) == true)
+                TrySetKeyAuto();
         }
-        
+
         private void TrySetKeyAuto()
         {
-            if(((SpriteAtlasProviderBase<Image>) target).TryGetComponent(out Image image) == false)
+            if (((SpriteAtlasProviderBase<Image>) target).TryGetComponent(out Image image) == false)
                 return;
-            
+
             _selectedKeyIndex = _atlasKeys.ToList().FindIndex(x => x == image.sprite.name);
         }
     }
